@@ -1,0 +1,180 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >-
+  WattNot v1 price publisher (docs/overhaul/PLAN.md section 3). One arm64 zip Lambda
+  writes v1/prices/<ZONE>/<DATE>.json to the existing bucket every 10 minutes from 13:00
+  to 18:50 Europe/Berlin. The bucket and the distribution stay outside this stack.
+  Package and deploy with docs/overhaul/DEPLOY.md.
+
+Parameters:
+  BucketName:
+    Type: String
+    Description: Existing S3 bucket behind the CloudFront distribution
+  DistributionId:
+    Type: String
+    Description: Existing CloudFront distribution id
+  AlertEmail:
+    Type: String
+    Description: Address that receives the alarm and budget emails
+
+Resources:
+  LogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /aws/lambda/wattnot-prices
+      RetentionInDays: 14
+
+  FunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: wattnot-prices
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: !GetAtt LogGroup.Arn
+              # HEAD and PUT under v1/ only. Without s3:ListBucket a HEAD of a
+              # missing key answers 403, which the function reads as absent.
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:PutObject
+                Resource: !Sub arn:${AWS::Partition}:s3:::${BucketName}/v1/*
+              - Effect: Allow
+                Action: cloudfront:CreateInvalidation
+                Resource: !Sub arn:${AWS::Partition}:cloudfront::${AWS::AccountId}:distribution/${DistributionId}
+
+  Function:
+    Type: AWS::Lambda::Function
+    Metadata:
+      cfn-lint:
+        config:
+          ignore_checks:
+            - W3002 # the local Code path is meant for `aws cloudformation package`
+    Properties:
+      FunctionName: wattnot-prices
+      Description: WattNot v1 price publisher
+      Runtime: python3.12
+      Architectures:
+        - arm64
+      Handler: wattnot_prices.handler.handler
+      # Local zip, uploaded and replaced by `aws cloudformation package`.
+      Code: build/function.zip
+      MemorySize: 128
+      Timeout: 300
+      Role: !GetAtt FunctionRole.Arn
+      Environment:
+        Variables:
+          BUCKET: !Ref BucketName
+          DISTRIBUTION_ID: !Ref DistributionId
+
+  SchedulerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: scheduler.amazonaws.com
+            Action: sts:AssumeRole
+            Condition:
+              StringEquals:
+                aws:SourceAccount: !Ref AWS::AccountId
+      Policies:
+        - PolicyName: invoke-wattnot-prices
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: lambda:InvokeFunction
+                Resource: !GetAtt Function.Arn
+
+  Schedule:
+    Type: AWS::Scheduler::Schedule
+    Properties:
+      Name: wattnot-prices
+      Description: Every 10 minutes from 13:00 to 18:50 Europe/Berlin, 36 runs a day
+      # The 18:50 run is the last: DEADLINE_BERLIN in wattnot_prices/publish.py
+      # must name the same time.
+      ScheduleExpression: cron(0/10 13-18 * * ? *)
+      ScheduleExpressionTimezone: Europe/Berlin
+      FlexibleTimeWindow:
+        Mode: "OFF"
+      Target:
+        Arn: !GetAtt Function.Arn
+        RoleArn: !GetAtt SchedulerRole.Arn
+        Input: "{}"
+
+  AlertTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: wattnot-alerts
+      Subscription:
+        - Protocol: email
+          Endpoint: !Ref AlertEmail
+
+  ErrorsAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: wattnot-prices-errors
+      AlarmDescription: >-
+        The publisher raised: a store or invalidation failure, or an object still
+        missing after the 18:50 run. Read the run's JSON line in /aws/lambda/wattnot-prices.
+      Namespace: AWS/Lambda
+      MetricName: Errors
+      Dimensions:
+        - Name: FunctionName
+          Value: !Ref Function
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 1
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+      AlarmActions:
+        - !Ref AlertTopic
+
+  Budget:
+    Type: AWS::Budgets::Budget
+    Properties:
+      Budget:
+        BudgetName: wattnot-monthly
+        BudgetType: COST
+        TimeUnit: MONTHLY
+        BudgetLimit:
+          Amount: 3
+          Unit: USD
+      NotificationsWithSubscribers:
+        - Notification:
+            NotificationType: ACTUAL
+            ComparisonOperator: GREATER_THAN
+            Threshold: 80
+            ThresholdType: PERCENTAGE
+          Subscribers:
+            - SubscriptionType: EMAIL
+              Address: !Ref AlertEmail
+        - Notification:
+            NotificationType: FORECASTED
+            ComparisonOperator: GREATER_THAN
+            Threshold: 100
+            ThresholdType: PERCENTAGE
+          Subscribers:
+            - SubscriptionType: EMAIL
+              Address: !Ref AlertEmail
+
+Outputs:
+  FunctionName:
+    Value: !Ref Function
+  AlertTopicArn:
+    Value: !Ref AlertTopic

@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WattNot support</title>
+    <style>
+      :root {
+        --bg: #f2f2f7;
+        --card: #ffffff;
+        --text: #1c1c1e;
+        --muted: #6c6c70;
+        --accent: #10263f;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font:
+          17px/1.5 -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+      }
+      main {
+        max-width: 680px;
+        margin: 0 auto;
+        padding: 32px 16px 48px;
+      }
+      h1 {
+        font-size: 28px;
+        margin: 0 0 4px;
+        color: var(--accent);
+      }
+      h2 {
+        font-size: 20px;
+        margin: 32px 0 8px;
+      }
+      section {
+        background: var(--card);
+        border-radius: 12px;
+        padding: 4px 16px 12px;
+        margin-top: 16px;
+      }
+      a {
+        color: #0a5fa8;
+      }
+      .muted {
+        color: var(--muted);
+      }
+      ul {
+        padding-left: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>WattNot support</h1>
+      <p class="muted">
+        Day-ahead electricity spot prices for your bidding zone.
+      </p>
+
+      <section>
+        <h2>Contact</h2>
+        <p>
+          Write to
+          <a href="mailto:cottinigiorgio@gmail.com">cottinigiorgio@gmail.com</a
+          >. Name your zone and the time you saw the problem, and add a
+          screenshot if you can.
+        </p>
+      </section>
+
+      <section>
+        <h2>What the prices are</h2>
+        <p>
+          Day-ahead spot price, excl. VAT, taxes, grid fees and supplier margin.
+          The price on your bill is higher, and your supplier sets it.
+        </p>
+        <p>
+          WattNot shows each price for one quarter hour, in the subunit of your
+          currency per kWh: cent, öre, øre or grosz. The chart shows the mean of
+          the four quarters of each hour. Touch and hold the chart to read the
+          quarters.
+        </p>
+        <p>
+          Prices in DKK, NOK, SEK and PLN are converted from EUR/MWh at the
+          European Central Bank reference rate. They show with ≈ and the date of
+          the rate.
+        </p>
+      </section>
+
+      <section>
+        <h2>When tomorrow's prices arrive</h2>
+        <p>
+          Tomorrow's prices usually arrive after 13:00 Central European Time.
+          Before that, the Tomorrow page says when to expect them. Open the app
+          or pull to refresh after that time.
+        </p>
+      </section>
+
+      <section>
+        <h2>Zones</h2>
+        <p>WattNot shows prices for these zones:</p>
+        <ul>
+          <li>Germany and Luxembourg</li>
+          <li>Denmark West (DK1) and Denmark East (DK2)</li>
+          <li>Norway Southwest (NO2)</li>
+          <li>Sweden Central (SE3) and Sweden South (SE4)</li>
+          <li>Netherlands</li>
+          <li>Poland</li>
+        </ul>
+        <p>
+          Finland, Estonia, Latvia, Norway NO1, NO3, NO4 and NO5, and Sweden SE1
+          and SE2 are not available yet. No public source licenses their prices
+          for reuse today. For these zones the app links to the public price
+          page of Nord Pool.
+        </p>
+      </section>
+
+      <section>
+        <h2>Levels</h2>
+        <p>
+          Cheap, normal, expensive and very expensive compare each price with
+          the previous 7 days of the zone. A price below the 25th percentile is
+          cheap, and a price above the 75th percentile is expensive. A price
+          above the 75th percentile plus 1.5 times the distance between the
+          25th and the 75th percentile is very expensive. "Zero or negative"
+          marks a price at or below zero.
+        </p>
+      </section>
+
+      <section>
+        <h2>Sources</h2>
+        <p>Source: Energinet (www.energidataservice.dk), CC BY 4.0.</p>
+        <p>Source: Bundesnetzagentur | SMARD.de, CC BY 4.0.</p>
+        <p>Exchange rate: European Central Bank reference rate.</p>
+        <p>
+          WattNot converts the prices from EUR/MWh to the subunit of the local
+          currency per kWh. Licence:
+          <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+          The publishers do not endorse WattNot.
+        </p>
+      </section>
+
+      <p class="muted"><a href="privacy.html">Privacy policy</a></p>
+    </main>
+  </body>
+</html>

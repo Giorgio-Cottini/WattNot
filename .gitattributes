@@ -1,0 +1,21 @@
+* text=auto
+
+# Keep sources LF
+*.py text eol=lf
+*.ts   text eol=lf
+*.tsx  text eol=lf
+*.js   text eol=lf
+*.jsx  text eol=lf
+*.json text eol=lf
+*.md   text eol=lf
+*.css  text eol=lf
+*.yml  text eol=lf
+*.yaml text eol=lf
+
+# Don't touch vendored psycopg2 layer (preserve original bytes)
+psycopg2-layer/** -text
+
+# Common script EOLs
+*.sh text eol=lf
+*.ps1 text eol=crlf
+*.bat text eol=crlf

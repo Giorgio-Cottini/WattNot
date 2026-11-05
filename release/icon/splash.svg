@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- WattNot splash image: the icon tile with iOS-like corners, transparent outside. -->
+  <style>
+    :root {
+      --bg: #10263f;
+      --normal: #c9d3de;
+      --cheap: #4fb874;
+      --expensive: #efbf3a;
+      --very-expensive: #b8327a;
+    }
+    .bg { fill: var(--bg); }
+    .normal { fill: var(--normal); }
+    .cheap { fill: var(--cheap); }
+    .expensive { fill: var(--expensive); }
+    .very-expensive { fill: var(--very-expensive); }
+  </style>
+  <rect class="bg" width="1024" height="1024" rx="229"/>
+  <clipPath id="above-baseline"><rect width="1024" height="812"/></clipPath>
+  <g clip-path="url(#above-baseline)">
+    <rect class="normal" x="164" y="500" width="96" height="334" rx="22"/>
+    <rect class="cheap" x="284" y="632" width="96" height="202" rx="22"/>
+    <rect class="cheap" x="404" y="572" width="96" height="262" rx="22"/>
+    <rect class="expensive" x="524" y="308" width="96" height="526" rx="22"/>
+    <rect class="normal" x="644" y="476" width="96" height="358" rx="22"/>
+    <rect class="very-expensive" x="764" y="212" width="96" height="622" rx="22"/>
+  </g>
+</svg>

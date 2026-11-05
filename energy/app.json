@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "WattNot",
+    "slug": "energy",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "wattnot",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "bundleIdentifier": "com.giorgiocottini.wattnot",
+      "supportsTablet": false,
+      "config": {
+        "usesNonExemptEncryption": false
+      }
+    },
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "a4d5a3ce-8a03-4565-a567-9ebd04fecd31"
+      }
+    },
+    "owner": "glootie",
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#10263f"
+        }
+      ]
+    ]
+  }
+}

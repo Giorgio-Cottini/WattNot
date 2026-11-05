@@ -1,0 +1,18 @@
+WattNot
+Copyright 2025-2026 Giorgio Cottini
+
+The source code is licensed under the Apache License, Version 2.0 (see LICENSE).
+The license grants no right to use the name "WattNot" or its icon.
+
+Price data
+----------
+The JSON price files under energy/lib/fixtures/, lambda/fixtures/ and
+lambda/tests/fixtures/ are not covered by the Apache License. They are
+third-party data under the Creative Commons Attribution 4.0 International
+licence (https://creativecommons.org/licenses/by/4.0/):
+
+- Source: Energinet (www.energidataservice.dk), CC BY 4.0.
+- Source: Bundesnetzagentur | SMARD.de, CC BY 4.0.
+
+Converted from EUR/MWh by WattNot. Exchange rate: European Central Bank
+reference rate.

@@ -1,0 +1,45 @@
+# PRIVATE
+# Secrets, credentials and personal tool settings: never committed.
+.env
+config.json
+lambda/cert/
+bucket_lambda/cert/
+.cursor/
+CLAUDE.md
+
+# REGENERABLE
+# Outputs that a command rebuilds.
+__pycache__/
+node_modules/
+.expo/
+.expo-shared/
+dist/
+web-build/
+expo-env.d.ts
+# Impeccable: generated review captures and decision sketches
+.impeccable/review/
+.impeccable/mocks/
+# GeorgOS: per-project structural code graph. Rebuild: graphify extract <unit> --code-only
+graphify-out/
+
+# MACHINE-LOCAL
+# State of one machine: logs, editor and OS files, workflow instance, scratch.
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+logs/
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.workflow-*/
+tmp/
