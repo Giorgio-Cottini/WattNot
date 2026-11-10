@@ -1,9 +1,10 @@
 # WattNot
 
-A free iPhone app for households on a dynamic electricity tariff. It shows the day-ahead spot
-price of one bidding zone for today and tomorrow, and the cheapest time to start a load of 1 to
-4 hours, such as a dishwasher, a washing machine or an electric car charger. The app has no
-account, no ads and no purchases, and it collects no user data.
+A free iPhone app that helps households on a dynamic tariff cut their electricity bill by shifting
+flexible loads, such as a dishwasher or an EV charger, to the cheapest hours of the day-ahead
+market. It shows the spot price of one bidding zone for today and tomorrow, and the cheapest time
+to start a load of 1 to 4 hours. The app has no account, no ads and no purchases, and it collects
+no user data.
 
 This repository holds the app, the backend that publishes the prices, and the support and privacy
 pages. The app is not on the App Store yet.
