@@ -105,13 +105,9 @@ The backend writes one JSON object per zone and local day, and the app reads onl
 Every price is identified by its UTC instant. Labels are computed in the zone's time zone, never
 the device's.
 
-```mermaid
-flowchart TD
-  src["Energinet · SMARD · Energy-Charts"] --> lambda["Lambda publisher, every 10 min, 13:00–18:50"]
-  ecb["ECB reference rate"] --> lambda
-  lambda --> s3[("S3: v1/prices/ZONE/DATE.json")]
-  s3 -- CloudFront --> app["iPhone app, disk cache first"]
-```
+<p align="center">
+  <img src="docs/pipeline.svg" width="560" alt="Price sources and the ECB rate feed the Lambda publisher, which writes S3; CloudFront serves the objects to the iPhone app">
+</p>
 
 ### 1. Fetch: `lambda/wattnot_prices/sources.py`
 
