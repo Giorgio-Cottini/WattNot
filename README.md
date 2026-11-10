@@ -106,11 +106,11 @@ Every price is identified by its UTC instant. Labels are computed in the zone's 
 the device's.
 
 ```mermaid
-flowchart LR
-  src["Energinet · SMARD · Energy-Charts"] --> lambda["Lambda publisher<br/>every 10 min, 13:00–18:50"]
+flowchart TD
+  src["Energinet · SMARD · Energy-Charts"] --> lambda["Lambda publisher, every 10 min, 13:00–18:50"]
   ecb["ECB reference rate"] --> lambda
-  lambda --> s3[("S3<br/>v1/prices/ZONE/DATE.json")]
-  s3 --> cf["CloudFront"] --> app["iPhone app<br/>disk cache first"]
+  lambda --> s3[("S3: v1/prices/ZONE/DATE.json")]
+  s3 -- CloudFront --> app["iPhone app, disk cache first"]
 ```
 
 ### 1. Fetch: `lambda/wattnot_prices/sources.py`
