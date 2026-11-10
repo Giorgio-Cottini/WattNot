@@ -1,4 +1,16 @@
-# WattNot
+<p align="center">
+  <img src="release/icon/icon-1024.png" width="112" alt="WattNot icon">
+</p>
+
+<h1 align="center">WattNot</h1>
+
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/code-Apache--2.0-blue" alt="Code licence: Apache-2.0"></a>
+  <a href="NOTICE"><img src="https://img.shields.io/badge/data-CC_BY_4.0-lightgrey" alt="Data licence: CC BY 4.0"></a>
+  <img src="https://img.shields.io/badge/platform-iOS-black?logo=apple" alt="Platform: iOS">
+  <img src="https://img.shields.io/badge/Expo_SDK-58-000020?logo=expo" alt="Expo SDK 58">
+  <img src="https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white" alt="Python 3.12">
+</p>
 
 A free iPhone app that helps households on a dynamic tariff cut their electricity bill by shifting
 flexible loads, such as a dishwasher or an EV charger, to the cheapest hours of the day-ahead
@@ -92,6 +104,14 @@ PRODUCT.md               ← users, purpose and product principles
 The backend writes one JSON object per zone and local day, and the app reads only those objects.
 Every price is identified by its UTC instant. Labels are computed in the zone's time zone, never
 the device's.
+
+```mermaid
+flowchart LR
+  src["Energinet · SMARD · Energy-Charts"] --> lambda["Lambda publisher<br/>every 10 min, 13:00–18:50"]
+  ecb["ECB reference rate"] --> lambda
+  lambda --> s3[("S3<br/>v1/prices/ZONE/DATE.json")]
+  s3 --> cf["CloudFront"] --> app["iPhone app<br/>disk cache first"]
+```
 
 ### 1. Fetch: `lambda/wattnot_prices/sources.py`
 
