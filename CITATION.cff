@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "WattNot: day-ahead electricity prices and the cheapest time to start a load"
+type: software
+authors:
+  - family-names: Cottini
+    given-names: Giorgio
+    email: cottinigiorgio@gmail.com
+license: Apache-2.0
+repository-code: "https://github.com/Giorgio-Cottini/WattNot"
+keywords:
+  - day-ahead market
+  - electricity prices
+  - bidding zone
+  - demand response
+  - react-native
+  - expo
+  - aws-lambda
